@@ -1,2 +1,3 @@
 # excavate
-A command line tool print out specific fields of a table-formatted input
+
+A command line tool to excavate fields from multi-column texts.

@@ -65,9 +65,10 @@ impl<R, E> ErrorAndExit<R, E> for Result<R, E> {
 
 fn main() {
     let opts = Options::parse();
-    let field_ids = parse_fields(&opts.fields)
+    let mut field_ids = parse_fields(&opts.fields)
         .unwrap_or_exit("Faile to parse fields")
         .1;
+    field_ids.sort();
 
     for line in std::io::stdin().lines() {
         let line = line.unwrap_or_exit("Failed to fetch line from stdin");
