@@ -56,14 +56,14 @@ fn sort_and_merge_ranges(mut ranges: Vec<(usize, usize)>) -> Vec<(usize, usize)>
 #[command(author, version, about)]
 struct Options {
     /// In the format of comma delimited list.
-    /// Each item can be a positive integers, or a range in the format of "a-b".
+    /// Each item can be a positive integer, or a range in the format of "a-b".
     /// At least one field must be specified.
-    /// The field number starts from 0.
+    /// The field id starts from 0.
     ///
     /// For example:
     ///
     /// 0           Select the first column  
-    /// 0-2         Select the first three column  
+    /// 0-2         Select the first three columns
     /// 0,3,5       Select the first, the fourth, and the sixth column  
     /// 0-3,5       Select the first four columns, and the sixth column  
     #[clap(verbatim_doc_comment)]
