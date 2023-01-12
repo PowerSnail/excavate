@@ -24,7 +24,7 @@ fn parse_range(i: &str) -> IResult<&str, (usize, usize)> {
     separated_pair(parse_usize, tag("-"), parse_usize)(i)
 }
 
-fn parse_fields(i: &str) -> IResult<&str, Vec<(usize, usize)>> {
+fn parse_columns(i: &str) -> IResult<&str, Vec<(usize, usize)>> {
     map(
         all_consuming(separated_list1(
             tag(","),
@@ -55,10 +55,7 @@ fn sort_and_merge_ranges(mut ranges: Vec<(usize, usize)>) -> Vec<(usize, usize)>
 #[derive(clap::Parser)]
 #[command(author, version, about)]
 struct Options {
-    /// In the format of comma delimited list.
-    /// Each item can be a positive integer, or a range in the format of "a-b".
-    /// At least one field must be specified.
-    /// The field id starts from 0.
+    /// In the format of comma delimited list. Each item can be a positive integer, or a range in the format of "a-b". At least one column must be specified. The column ID starts from 0 (first column is 0, the second 1, etc.). The range "a-b" includes both end, with "a" being the lower end, and "b" the higher end. If "a" is greater than "b", the range is empty (selects no column).
     ///
     /// For example:
     ///
@@ -67,7 +64,7 @@ struct Options {
     /// 0,3,5       Select the first, the fourth, and the sixth column  
     /// 0-3,5       Select the first four columns, and the sixth column  
     #[clap(verbatim_doc_comment)]
-    fields: String,
+    columns: String,
 }
 
 fn print_row<T>(cells: impl Iterator<Item = T>)
@@ -105,7 +102,7 @@ impl<R, E> ErrorAndExit<R, E> for Result<R, E> {
 
 fn main() {
     let opts = Options::parse();
-    let field_ids = parse_fields(&opts.fields)
+    let columns = parse_columns(&opts.columns)
         .unwrap_or_exit("Faile to parse fields")
         .1;
 
@@ -113,7 +110,7 @@ fn main() {
         let line = line.unwrap_or_exit("Failed to fetch line from stdin");
         let fields = parse_line(&line).unwrap_or_exit("Failed to parse input").1;
         print_row(
-            field_ids
+            columns
                 .iter()
                 .flat_map(|&(lo, hi)| lo..=hi)
                 .map(|i| fields[i]),
