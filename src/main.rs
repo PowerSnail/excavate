@@ -41,11 +41,11 @@ where
 
 fn main() {
     let opts = Options::parse();
-    let (_, field_ids) = parse_fields(&opts.fields).expect("Failed to parse fields.");
+    let field_ids = parse_fields(&opts.fields).expect("Failed to parse fields.").1;
 
     for line in std::io::stdin().lines() {
         let line = line.expect("Failed to read from standard input");
-        let (_, fields) = parse_line(&line).expect(&format!("Failed to parse input: {}", line));
+        let fields = parse_line(&line).expect(&format!("Failed to parse input: {}", line)).1;
         print_row(field_ids.iter().map(|&i| fields[i]));
     }
 }
