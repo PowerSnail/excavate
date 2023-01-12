@@ -72,6 +72,6 @@ fn main() {
     for line in std::io::stdin().lines() {
         let line = line.unwrap_or_exit("Failed to fetch line from stdin");
         let fields = parse_line(&line).unwrap_or_exit("Failed to parse input").1;
-        print_row(field_ids.iter().map(|&i| fields[i]));
+        print_row(field_ids.iter().filter_map(|&i| fields.get(i)));
     }
 }
