@@ -10,7 +10,16 @@ A command line tool to excavate fields from multi-column texts.
 excavate <FIELDS>
 ```
 
-`<FIELDS>` in the format of comma delimited positive integers. At least one field must be specified. The field number starts from 0.
+`<FIELDS>` is supplied in the format of comma delimited list. Each item can be a positive integer, or a range in the format of "a-b". At least one field must be specified. The field id starts from 0 (first column is 0, the second 1, etc.). The range "a-b" includes both end, with "a" being the lower end, and "b" the higher end. If "a" is greater than "b", the range is empty (selects no column).
+    
+For example:
+
+| fields | Description                                         |
+| :----- | :-------------------------------------------------- |
+| 0      | Select the first column                             |
+| 0-2    | Select the first three columns                      |
+| 0,3,5  | Select the first, the fourth, and the sixth column  |
+| 0-3,5  | Select the first four columns, and the sixth column |
 
 For example:
 
